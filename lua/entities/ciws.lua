@@ -39,8 +39,10 @@ function ENT:Initialize()
 end
 
 function scan(self)
+	print("scan")
 	for k, v in pairs( ents.FindInSphere(self:GetPos(), 100) ) do
 		local class = v:GetClass()
+		if v.IsNPC() then
 		//if class == "prop_door_rotating" then
 		//if self:GetPos():Distance(v:GetPos()) < 100 then
 			print("Class name:")
@@ -56,7 +58,7 @@ function scan(self)
 			bullet.Dir = v:GetPos():Sub(self:GetPos())
 			self:FireBullets(bullet)
 		//end
-		//end
+		end
 	end
 end
 
