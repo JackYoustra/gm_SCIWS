@@ -55,7 +55,10 @@ function scan(self)
 			bullet.Tracer = 1
 			bullet.Src = self:GetPos()
 			bullet.Spread = Vector(1, 1, 0)
-			bullet.Dir = v:GetPos():Sub(self:GetPos())
+			
+			local shotVector =  v:GetPos()
+			shotVector:Sub(self:GetPos())
+			bullet.Dir = shotVector
 			self:FireBullets(bullet)
 		//end
 		end
