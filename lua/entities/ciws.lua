@@ -19,6 +19,11 @@ function ENT:SpawnFunction( ply, tr, ClassName )
 
 end
 
+function ENT:Draw()
+    -- self.BaseClass.Draw(self) -- Overrides Draw
+    self:DrawModel() -- Draws Model Client Side
+end
+
 function ENT:OnSpawn(self)
    print("spawn called")
    timer.Create("scanner", 0.1, 0, function() scan(self) end);
