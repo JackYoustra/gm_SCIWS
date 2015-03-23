@@ -4,9 +4,24 @@ AddCSLuaFile()
 
 include('shared.lua')
 
-function ENT:Spawn()
+function ENT:SpawnFunction( ply, tr, ClassName )
+
+	if ( !tr.Hit ) then return end
+
+	local SpawnPos = tr.HitPos + tr.HitNormal * 16
+
+	local ent = ents.Create( ClassName )
+	ent:SetPos( SpawnPos )
+	ent:Spawn()
+	ent:Activate()
+	ent:OnSpawn(ent)
+	return ent
+
+end
+
+function ENT:OnSpawn(self)
    print("spawn called")
-   timer.Create("scanner", 0.1, 0, scan);
+   timer.Create("scanner", 0.1, 0, function() scan(self) end);
    
 end
 
@@ -23,13 +38,13 @@ function ENT:Initialize()
 	end
 end
 
-function scan()
-	for k, v in pairs( ents.GetAll() ) do
+function scan(self)
+	for k, v in pairs( ents.FindInSphere(self:GetPos(), 100) ) do
 		local class = v:GetClass()
-		print("scan")
 		//if class == "prop_door_rotating" then
-		if self:GetPos():Distance(v:GetPos()) < 100 then
-			print("Class name:" + class)
+		//if self:GetPos():Distance(v:GetPos()) < 100 then
+			print("Class name:")
+			print(class)
 			bullet = {}
 			bullet.Attacker = self
 			bullet.Num = 1
@@ -40,7 +55,7 @@ function scan()
 			bullet.Spread = Vector(1, 1, 0)
 			bullet.Dir = v:GetPos():Sub(self:GetPos())
 			self:FireBullets(bullet)
-		end
+		//end
 		//end
 	end
 end
