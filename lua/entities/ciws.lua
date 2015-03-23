@@ -53,6 +53,7 @@ function scan(self)
 			bullet.Force = 2
 			bullet.Damage = 1
 			bullet.Tracer = 1
+			bullet.TracerName = "Tracer" //https://maurits.tv/data/garrysmod/wiki/wiki.garrysmod.com/index7161.html
 			bullet.Src = self:GetPos()
 			bullet.Spread = Vector(1, 1, 0)
 			
