@@ -26,7 +26,7 @@ end
 
 function ENT:OnSpawn(self)
    print("spawn called")
-   timer.Create("scanner", 0.01, 0, function() scan(self) end);
+   timer.Create("scanner", 0.03, 0, function() scan(self) end);
    
 end
 
@@ -45,31 +45,40 @@ end
 
 function scan(self)
 	print("scan")
+	local distance = 1001
+	local currentTarget = nil
 	for k, v in pairs( ents.FindInSphere(self:GetPos(), 1000) ) do
 		local class = v:GetClass()
 		if v.IsNPC() and v:Health() > 0  then
-		//if class == "prop_door_rotating" then
-		//if self:GetPos():Distance(v:GetPos()) < 100 then
-			print("Class name:")
-			print(class)
-			bullet = {}
-			bullet.Attacker = self
-			bullet.Num = 1
-			bullet.Force = 2
-			bullet.Damage = 1
-			bullet.Tracer = 1
-			bullet.TracerName = "Tracer" //https://maurits.tv/data/garrysmod/wiki/wiki.garrysmod.com/index7161.html
-			bullet.Src = self:GetPos()
-			bullet.Spread = Vector(16, 16, 0)
-			
-			local shotVector =  v:GetPos()
-			shotVector:Sub(self:GetPos())
-			bullet.Dir = shotVector
-			self:FireBullets(bullet)
-		//end
-		break
+			local currentDistance = self:GetPos():Distance(v:GetPos())
+			if (currentDistance < distance) then
+			    distance = currentDistance
+				currentTarget = v
+			end
 		end
 	end
+	if (currentTarget != nil) then
+		CIWSShoot(self, currentTarget:GetPos())
+	end
+end
+
+function CIWSShoot(self, targetPosition)
+	print("Class name:")
+	print(class)
+	bullet = {}
+	bullet.Attacker = self
+	bullet.Num = 1
+	bullet.Force = 2
+	bullet.Damage = 1
+	bullet.Tracer = 1
+	bullet.TracerName = "Tracer" //https://maurits.tv/data/garrysmod/wiki/wiki.garrysmod.com/index7161.html
+	bullet.Src = self:GetPos()
+	bullet.Spread = Vector(16, 16, 0)
+	
+	local shotVector =  targetPosition
+	shotVector:Sub(self:GetPos())
+	bullet.Dir = shotVector
+	self:FireBullets(bullet)
 end
 
 
