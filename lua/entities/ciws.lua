@@ -26,26 +26,26 @@ end
 
 function ENT:OnSpawn(self)
    print("spawn called")
-   timer.Create("scanner", 0.1, 0, function() scan(self) end);
+   timer.Create("scanner", 0.01, 0, function() scan(self) end);
    
 end
 
 function ENT:Initialize()
- 
+    if CLIENT then return end
 	self:SetModel( "models/props_interiors/BathTub01a.mdl" )
-	self:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,
-	self:SetMoveType( MOVETYPE_VPHYSICS )   -- after all, gmod is a physics
-	self:SetSolid( SOLID_VPHYSICS )         -- Toolbox
- 
-        local phys = self:GetPhysicsObject()
-	if (phys:IsValid()) then
-		phys:Wake()
-	end
+    self:PhysicsInit(SOLID_VPHYSICS)
+    self:SetMoveType(MOVETYPE_VPHYSICS)
+    self:SetSolid(SOLID_VPHYSICS)
+
+    local physics = self:GetPhysicsObject()
+    if ( IsValid(physics) ) then
+        physics:Wake()
+    end
 end
 
 function scan(self)
 	print("scan")
-	for k, v in pairs( ents.FindInSphere(self:GetPos(), 500) ) do
+	for k, v in pairs( ents.FindInSphere(self:GetPos(), 1000) ) do
 		local class = v:GetClass()
 		if v.IsNPC() and v:Health() > 0  then
 		//if class == "prop_door_rotating" then
@@ -60,7 +60,7 @@ function scan(self)
 			bullet.Tracer = 1
 			bullet.TracerName = "Tracer" //https://maurits.tv/data/garrysmod/wiki/wiki.garrysmod.com/index7161.html
 			bullet.Src = self:GetPos()
-			bullet.Spread = Vector(1, 1, 0)
+			bullet.Spread = Vector(16, 16, 0)
 			
 			local shotVector =  v:GetPos()
 			shotVector:Sub(self:GetPos())
