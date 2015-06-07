@@ -45,7 +45,7 @@ end
 
 function scan(self)
 	print("scan")
-	for k, v in pairs( ents.FindInSphere(self:GetPos(), 100) ) do
+	for k, v in pairs( ents.FindInSphere(self:GetPos(), 500) ) do
 		local class = v:GetClass()
 		if v.IsNPC() and v:Health() > 0  then
 		//if class == "prop_door_rotating" then
