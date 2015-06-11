@@ -26,7 +26,7 @@ end
 
 function ENT:OnSpawn(self)
    print("spawn called")
-   timer.Create("scanner", 0.03, 0, function() scan(self) end);
+   timer.Create(uuid(), 0.03, 0, function() scan(self) end);
    
 end
 
@@ -44,7 +44,6 @@ function ENT:Initialize()
 end
 
 function scan(self)
-	print("scan")
 	local distance = 1001
 	local currentTarget = nil
 	for k, v in pairs( ents.FindInSphere(self:GetPos(), 1000) ) do
@@ -63,8 +62,7 @@ function scan(self)
 end
 
 function CIWSShoot(self, targetPosition)
-	print("Class name:")
-	print(class)
+	sound.Play( "ciwsshort.mp3", self:GetPos(), 75, 100, 1)
 	bullet = {}
 	bullet.Attacker = self
 	bullet.Num = 1
