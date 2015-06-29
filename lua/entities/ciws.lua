@@ -26,8 +26,15 @@ end
 
 function ENT:OnSpawn(self)
    print("spawn called")
-   timer.Create(uuid(), 0.03, 0, function() scan(self) end);
+   //timer.Create(uuid(), 0.03, 0, function() scan(self) end);
    
+end
+
+function ENT:Think()
+	-- Do stuff
+	scan(self)
+	self:NextThink( CurTime() )
+	return true
 end
 
 function ENT:Initialize()
@@ -44,6 +51,7 @@ function ENT:Initialize()
 end
 
 function scan(self)
+	print("scan")
 	local distance = 1001
 	local currentTarget = nil
 	for k, v in pairs( ents.FindInSphere(self:GetPos(), 1000) ) do
@@ -79,9 +87,26 @@ function CIWSShoot(self, targetPosition)
 	self:FireBullets(bullet)
 end
 
+function TheMenu( Panel )
+	Panel:ClearControls()
+	Panel:AddHeader()
+	//Do menu things here
+end
+
+function createthemenu()
+	spawnmenu.AddToolMenuOption( "Options",
+	"Stuff",
+	"CustomMenu",
+	"My Custom Menu",
+	"custom_doit",
+	"", -- Resource File( Probably shouldn't use )
+	TheMenu )
+end
+
+hook.Add( "PopulateToolMenu", "pleasework", createthemenu )
 
 local random = math.random
-local function uuid()
+function uuid()
     local template ='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
     return string.gsub(template, '[xy]', function (c)
         local v = (c == 'x') and random(0, 0xf) or random(8, 0xb)
